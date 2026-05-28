@@ -6,8 +6,8 @@ env:
   DB_HOST: 127.0.0.1
   DB_USER: root
   DB_PASSWORD: root
-  DB_NAME: todolost_db
-  POR: 3000
+  DB_NAME: todolist_db
+  PORT: 3000
   NODE_ENV: test
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
         options: >-
           --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
           --health-interval=5s
-          --health-timeout=5
+          --health-timeout=5s
           --health-retries=20
     steps:
       - name: Checkout
@@ -42,3 +42,10 @@ jobs:
 
       - name: Test
         run: npm test
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
